@@ -49,50 +49,50 @@ def secondFrame(root,frameOne):
     laB.place(x=50,y=170)
 
     entCnt = Entry(frameOne,width=5,font = "Times 14",bg = '#edf5f3')
+    entCnt.insert(0,'50')
     entCnt.place(x=53,y=200)
     # for i in range(5):
     #     for j in range(6):
     #         ent = Entry(frameOne, width = 3)
     #         ent.place(x=12+i*19,y=100+j*19)
 
-    def calcOne():
-        global matr
-        global N
-        global a
-        global b
-        global c
-        tmatr = []
-        
+    def calcTests():
+        nonlocal N
+        nonlocal a
+        nonlocal b
+        nonlocal c
+        N = entN.getint(entN.get())
         aa1 , aa2 = a[0].getdouble(a[0].get()),a[1].getdouble(a[1].get())  
         bb1 , bb2 = b[0].getdouble(b[0].get()),b[1].getdouble(b[1].get())  
         cc1 , cc2 = c[0].getdouble(c[0].get()),c[1].getdouble(c[1].get())  
         tmatr = sb.gen_p_matrix(N,3,aa1,aa2,bb1,bb2,cc1,cc2)
-        
-        res1, indices1 = sb.hungarian_max(tmatr)
-        res2, indices2 = sb.hungarian_min(tmatr)
-        res3, indices3 = sb.greedy(tmatr)
-        res4, indices4 = sb.saving(tmatr)
-        resMas1 = [0]
-        down = [x  for x in range(N+1)]
-        s = 0 
-        for i in range(N):
-            s += tmatr[indices1[i]][i]
-            resMas1.append(s)
-        resMas2 = [0]
-        s = 0 
-        for i in range(N):
-            s += tmatr[indices2[i]][i]
-            resMas2.append(s)
-        resMas3 = [0]
-        s = 0 
-        for i in range(N):
-            s += tmatr[indices3[i]][i]
-            resMas3.append(s)
-        resMas4 = [0]
-        s = 0 
-        for i in range(N):
-            s += tmatr[indices4[i]][i]
-            resMas4.append(s)
+        cnt = entCnt.getint(entCnt.get())
+        resMas1 = [0]*(N+1)
+        resMas2 = [0]*(N+1)
+        resMas3 = [0]*(N+1)
+        resMas4 = [0]*(N+1)
+        for _ in range(cnt):
+            res1, indices1 = sb.hungarian_max(tmatr)
+            res2, indices2 = sb.hungarian_min(tmatr)
+            res3, indices3 = sb.greedy(tmatr)
+            res4, indices4 = sb.saving(tmatr)
+            down = [x  for x in range(N+1)]
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices1[i]][i]
+                resMas1[i+1]+=s/cnt
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices2[i]][i]
+                resMas2[i+1]+=s/cnt
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices3[i]][i]
+                resMas3[i+1]+=s/cnt
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices4[i]][i]
+                resMas4[i+1]+=s/cnt
         plt.rcParams ['figure.figsize'] = [9, 6]
         plt.plot(down,resMas1,'r-.',label = 'Венгерский алгоритм(максимум)')
         plt.plot(down,resMas2,'g',label = 'Венгерский алгоритм(минимум)')
@@ -101,8 +101,8 @@ def secondFrame(root,frameOne):
         plt.legend(loc=2)
         plt.xlabel("Время")
         plt.ylabel("S")
-        plt.title("Единичный эксперимент")
+        plt.title("Усредненные результаты по серии экспериментов")
         plt.show()
         
-    btn = Button(text="Провести расчеты",font = "Times 13",bg = '#00ffff',command=calcOne)
+    btn = Button(frameOne,text="Провести расчеты",font = "Times 13",bg = '#00ffff',command=calcTests)
     btn.place( x = 50,y = 50)
