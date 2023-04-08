@@ -171,7 +171,7 @@ def calcOne():
     down = [x  for x in range(N+1)]
     s = 0 
     for i in range(N):
-        s += tmatr[indices1[i]][i]
+            
         resMas1.append(s)
     resMas2 = [0]
     s = 0 
