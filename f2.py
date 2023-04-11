@@ -71,11 +71,16 @@ def secondFrame(root,frameOne):
         resMas2 = [0]*(N+1)
         resMas3 = [0]*(N+1)
         resMas4 = [0]*(N+1)
+        resMas5 = [0]*(N+1)
+        resMas6 = [0]*(N+1)
         for _ in range(cnt):
             res1, indices1 = sb.hungarian_max(tmatr)
             res2, indices2 = sb.hungarian_min(tmatr)
             res3, indices3 = sb.greedy(tmatr)
             res4, indices4 = sb.saving(tmatr)
+            
+            res5, indices5 = sb.saving_greedy(tmatr,N//2)
+            res6, indices6 = sb.greedy_saving(tmatr,N//2)
             down = [x  for x in range(N+1)]
             s = 0 
             for i in range(N):
@@ -93,11 +98,22 @@ def secondFrame(root,frameOne):
             for i in range(N):
                 s += tmatr[indices4[i]][i]
                 resMas4[i+1]+=s/cnt
+            
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices5[i]][i]
+                resMas5[i+1]+=s/cnt
+            s = 0 
+            for i in range(N):
+                s += tmatr[indices6[i]][i]
+                resMas6[i+1]+=s/cnt
         plt.rcParams ['figure.figsize'] = [9, 6]
         plt.plot(down,resMas1,'r-.',label = 'Венгерский алгоритм(максимум)')
         plt.plot(down,resMas2,'g',label = 'Венгерский алгоритм(минимум)')
         plt.plot(down,resMas3,'b:',label = 'Жадный алгоритм')
         plt.plot(down,resMas4,'c--',label = 'Бережливый алгоритм')
+        plt.plot(down,resMas5,'-',marker='2',color = 'crimson',label = 'Бережливо-жадный алгоритм')
+        plt.plot(down,resMas6,'-',marker='|',color = 'indigo',label = 'Жадно-бережливый алгоритм')
         plt.legend(loc=2)
         plt.xlabel("Время")
         plt.ylabel("S")
