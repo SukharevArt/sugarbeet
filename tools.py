@@ -1,5 +1,7 @@
 from random import uniform
+import file_manager as fm
 # Отсюда ничего брать не надо, все нужные функции находятся в sugarbeet.py
+
 
 def gen_vector(n: int, _min: float, _max: float):
     """Возвращает список размера n со случайными значениями от _min до _max."""
@@ -52,4 +54,5 @@ def create_p_matrix(a_vector, b_matrix):
                 res = 1
             _str.append(res)
         result.append(_str)
+
     return result

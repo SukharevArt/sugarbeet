@@ -1,4 +1,5 @@
 import sugarbeet as sb
+import file_manager as fm
 from tkinter import *
 from tkinter import ttk
 import re
@@ -61,6 +62,7 @@ def secondFrame(root,frameOne):
         nonlocal a
         nonlocal b
         nonlocal c
+        fm.file_print = False
         N = entN.getint(entN.get())
         aa1 , aa2 = a[0].getdouble(a[0].get()),a[1].getdouble(a[1].get())  
         bb1 , bb2 = b[0].getdouble(b[0].get()),b[1].getdouble(b[1].get())  

@@ -1,6 +1,7 @@
 import sugarbeet as sb
 from tkinter import *
 from tkinter import ttk
+import file_manager as fm
 import re
 from matplotlib import pyplot as plt
 import f2
@@ -145,6 +146,7 @@ box.place(x=53,y=215)
 #         ent.place(x=12+i*19,y=100+j*19)
 
 def calcOne():
+    fm.file_print = True
     global matr
     global N
     global a

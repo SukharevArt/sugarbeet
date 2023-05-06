@@ -1,5 +1,6 @@
 import tools
 import numpy
+import file_manager as fm
 from scipy.optimize import linear_sum_assignment
 
 
@@ -20,6 +21,12 @@ def gen_p_matrix(size: int, sugar_divider: int,
     degradation_matrix = tools.gen_matrix(size, degradation_cols, min_degradation, max_degradation)
     b_matrix = tools.unite_matrix(sugar_matrix, degradation_matrix)
     p_matrix = tools.create_p_matrix(a_vector, b_matrix)
+
+    if fm.file_print:
+        fm.create()
+        fm.write_start_conditions(a_vector, b_matrix)
+        fm.write_sugar_matrix(p_matrix)
+
     return p_matrix
 
 
@@ -32,6 +39,10 @@ def hungarian_min(p_matrix):
 
     for i in range(len(row_indices)):
         row_indices[col_indices[i]] = i
+
+    if fm.file_print:
+        fm.write_algorithm_res("Венгерский (min)", result, row_indices)
+
     return result, row_indices
 
 
@@ -50,6 +61,10 @@ def hungarian_max(p_matrix):
 
     for i in range(len(row_indices)):
         row_indices[col_indices[i]] = i
+
+    if fm.file_print:
+        fm.write_algorithm_res("Венгерский (max)", result, row_indices)
+
     return result, row_indices
 
 
@@ -79,6 +94,10 @@ def greedy(p_matrix: list):
         result += col_max
         indices.append(col_max_index)
         took.append(col_max_index)
+
+    if fm.file_print:
+        fm.write_algorithm_res("Жадный", result, indices)
+
     return result, indices
 
 
@@ -108,6 +127,10 @@ def saving(p_matrix: list):
         result += col_min
         indices.append(col_min_index)
         took.append(col_min_index)
+
+    if fm.file_print:
+        fm.write_algorithm_res("Бережливый", result, indices)
+
     return result, indices
 
 
@@ -159,6 +182,9 @@ def saving_greedy(p_matrix: list, saving_steps: int):
             took.append(col_max_index)
 
         saving_steps_completed += 1
+
+    if fm.file_print:
+        fm.write_algorithm_res("Бережливо-жадный", result, indices)
 
     return result, indices
 
@@ -212,6 +238,9 @@ def greedy_saving(p_matrix: list, greedy_steps: int):
             took.append(col_min_index)
 
         greedy_steps_completed += 1
+
+    if fm.file_print:
+        fm.write_algorithm_res("Жадно-бережливый", result, indices)
 
     return result, indices
 
